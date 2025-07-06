@@ -525,10 +525,11 @@
                                         "example": "123 Main St, City, State"
                                     },
                                     "role": {
+                                        "description": "User role: admin, author, member",
                                         "type": "string",
                                         "enum": [
                                             "admin",
-                                            "librarian",
+                                            "author",
                                             "member"
                                         ],
                                         "example": "member"
@@ -647,6 +648,7 @@
                                         "example": "Updated Address"
                                     },
                                     "role": {
+                                        "description": "User role: admin, librarian, member",
                                         "type": "string",
                                         "enum": [
                                             "admin",
@@ -824,6 +826,7 @@
                         "nullable": true
                     },
                     "role": {
+                        "description": "User role: admin, librarian, member",
                         "type": "string",
                         "enum": [
                             "admin",

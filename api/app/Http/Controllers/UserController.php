@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\UserRole;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use OpenApi\Annotations as OA;
@@ -18,7 +19,7 @@ use OpenApi\Annotations as OA;
  *     @OA\Property(property="email", type="string", format="email", example="john@example.com"),
  *     @OA\Property(property="phone", type="string", nullable=true, example="+1234567890"),
  *     @OA\Property(property="address", type="string", nullable=true, example="123 Main St, City, State"),
- *     @OA\Property(property="role", type="string", enum={"admin", "librarian", "member"}, example="member"),
+      *     @OA\Property(property="role", type="string", enum={"admin", "author", "member"}, example="member", description="User role: admin, author, member"),
  *     @OA\Property(property="is_active", type="boolean", example=true),
  *     @OA\Property(property="membership_expires_at", type="string", format="date", nullable=true, example="2024-12-31"),
  *     @OA\Property(property="email_verified_at", type="string", format="date-time", nullable=true, example="2024-01-01T00:00:00.000000Z"),
@@ -64,7 +65,7 @@ class UserController extends Controller
      *             @OA\Property(property="password", type="string", format="password", example="password123"),
      *             @OA\Property(property="phone", type="string", example="+1234567890"),
      *             @OA\Property(property="address", type="string", example="123 Main St, City, State"),
-     *             @OA\Property(property="role", type="string", enum={"admin", "librarian", "member"}, example="member"),
+                  *             @OA\Property(property="role", type="string", enum={"admin", "librarian", "member"}, example="member", description="User role: admin, librarian, member"),
      *             @OA\Property(property="is_active", type="boolean", example=true),
      *             @OA\Property(property="membership_expires_at", type="string", format="date", example="2024-12-31")
      *         )
@@ -88,7 +89,7 @@ class UserController extends Controller
             'password' => 'required|string|min:8',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string',
-            'role' => 'nullable|in:admin,librarian,member',
+            'role' => 'nullable|in:' . implode(',', UserRole::values()),
             'is_active' => 'nullable|boolean',
             'membership_expires_at' => 'nullable|date',
         ]);
@@ -156,7 +157,7 @@ class UserController extends Controller
      *             @OA\Property(property="password", type="string", format="password", example="newpassword123"),
      *             @OA\Property(property="phone", type="string", example="+1234567890"),
      *             @OA\Property(property="address", type="string", example="Updated Address"),
-     *             @OA\Property(property="role", type="string", enum={"admin", "librarian", "member"}, example="librarian"),
+                  *             @OA\Property(property="role", type="string", enum={"admin", "librarian", "member"}, example="librarian", description="User role: admin, librarian, member"),
      *             @OA\Property(property="is_active", type="boolean", example=true),
      *             @OA\Property(property="membership_expires_at", type="string", format="date", example="2024-12-31")
      *         )
@@ -190,7 +191,7 @@ class UserController extends Controller
             'password' => 'sometimes|required|string|min:8',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string',
-            'role' => 'sometimes|required|in:admin,librarian,member',
+            'role' => 'sometimes|required|in:' . implode(',', UserRole::values()),
             'is_active' => 'nullable|boolean',
             'membership_expires_at' => 'nullable|date',
         ]);
