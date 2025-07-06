@@ -26,6 +26,7 @@ class BookController extends Controller
         $validated_book = $request->validate([
             'title' => 'required|string|max:256',
             'author' => 'required|string|max:256',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
         return response()->json(Book::create($validated_book), 201);
     }
@@ -60,6 +61,7 @@ class BookController extends Controller
         $validated_data = $request->validate([
             'title' => 'sometimes|required|string|max:256',
             'author' => 'sometimes|required|string|max:256',
+            'category_id' => 'sometimes|required|exists:categories,id',
         ]);
         
         $book->update($validated_data);

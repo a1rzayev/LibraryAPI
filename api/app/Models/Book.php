@@ -14,6 +14,12 @@ class Book extends Model
         'title',
         'author'
     ];
+    
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     /**
      * Boot function from Laravel.
