@@ -26,6 +26,30 @@ use OpenApi\Annotations as OA;
  *     name="Authentication",
  *     description="API Endpoints for user authentication"
  * )
+ * 
+ * @OA\Schema(
+ *     schema="User",
+ *     title="User",
+ *     description="User model",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="name", type="string", maxLength=255, example="John Doe"),
+ *     @OA\Property(property="email", type="string", format="email", example="john@example.com"),
+ *     @OA\Property(property="phone", type="string", nullable=true, example="+1234567890"),
+ *     @OA\Property(property="address", type="string", nullable=true, example="123 Main St, City, State"),
+ *     @OA\Property(property="role", type="string", enum={"admin", "author", "member"}, example="member"),
+ *     @OA\Property(property="is_active", type="boolean", example=true),
+ *     @OA\Property(property="membership_expires_at", type="string", format="date-time", nullable=true, example="2024-12-31T23:59:59.000000Z"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", example="2024-01-01T00:00:00.000000Z"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", example="2024-01-01T00:00:00.000000Z")
+ * )
+ * 
+ * @OA\Schema(
+ *     schema="Authorization",
+ *     title="Authorization",
+ *     description="Authorization response",
+ *     @OA\Property(property="token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."),
+ *     @OA\Property(property="type", type="string", example="bearer")
+ * )
  */
 class AuthController extends Controller
 {

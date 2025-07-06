@@ -16,11 +16,24 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('me', [AuthController::class, 'me']);
 });
 
-// Protected routes
+// Public routes (no authentication required)
+Route::get('books', [BookController::class, 'index']);
+Route::get('books/{id}', [BookController::class, 'show']);
+Route::get('categories', [CategoryController::class, 'index']);
+Route::get('categories/{id}', [CategoryController::class, 'show']);
+Route::get('categories/{id}/books', [CategoryController::class, 'getBooks']);
+
+// Protected routes (authentication required)
 Route::middleware('auth:api')->group(function () {
-    Route::apiResource('books', BookController::class);
-    Route::apiResource('categories', CategoryController::class);
-    Route::get('categories/{id}/books', [CategoryController::class, 'getBooks']);
+    // Books - create, update, delete operations
+    Route::post('books', [BookController::class, 'store']);
+    Route::put('books/{id}', [BookController::class, 'update']);
+    Route::delete('books/{id}', [BookController::class, 'destroy']);
+    
+    // Categories - create, update, delete operations
+    Route::post('categories', [CategoryController::class, 'store']);
+    Route::put('categories/{id}', [CategoryController::class, 'update']);
+    Route::delete('categories/{id}', [CategoryController::class, 'destroy']);
     
     // Admin-only routes
     Route::middleware('role:admin')->group(function () {

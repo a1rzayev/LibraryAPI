@@ -316,12 +316,7 @@
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             },
             "post": {
                 "tags": [
@@ -415,12 +410,7 @@
                     "404": {
                         "description": "Book not found"
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             },
             "put": {
                 "tags": [
@@ -1073,9 +1063,69 @@
     },
     "components": {
         "schemas": {
+            "User": {
+                "title": "User",
+                "description": "User model",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "john@example.com"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "+1234567890",
+                        "nullable": true
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "123 Main St, City, State",
+                        "nullable": true
+                    },
+                    "role": {
+                        "type": "string",
+                        "enum": [
+                            "admin",
+                            "author",
+                            "member"
+                        ],
+                        "example": "member"
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "membership_expires_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-12-31T23:59:59.000000Z",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    }
+                },
+                "type": "object"
+            },
             "Authorization": {
                 "title": "Authorization",
-                "description": "JWT Authorization response",
+                "description": "Authorization response",
                 "properties": {
                     "token": {
                         "type": "string",
@@ -1150,72 +1200,6 @@
                     }
                 },
                 "type": "object"
-            },
-            "User": {
-                "title": "User",
-                "description": "User model",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "name": {
-                        "type": "string",
-                        "example": "John Doe"
-                    },
-                    "email": {
-                        "type": "string",
-                        "format": "email",
-                        "example": "john@example.com"
-                    },
-                    "phone": {
-                        "type": "string",
-                        "example": "+1234567890",
-                        "nullable": true
-                    },
-                    "address": {
-                        "type": "string",
-                        "example": "123 Main St, City, State",
-                        "nullable": true
-                    },
-                    "role": {
-                        "description": "User role: admin, author, member",
-                        "type": "string",
-                        "enum": [
-                            "admin",
-                            "author",
-                            "member"
-                        ],
-                        "example": "member"
-                    },
-                    "is_active": {
-                        "type": "boolean",
-                        "example": true
-                    },
-                    "membership_expires_at": {
-                        "type": "string",
-                        "format": "date",
-                        "example": "2024-12-31",
-                        "nullable": true
-                    },
-                    "email_verified_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-01-01T00:00:00.000000Z",
-                        "nullable": true
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-01-01T00:00:00.000000Z"
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-01-01T00:00:00.000000Z"
-                    }
-                },
-                "type": "object"
             }
         },
         "securitySchemes": {
@@ -1229,7 +1213,7 @@
     "tags": [
         {
             "name": "Authentication",
-            "description": "Authentication"
+            "description": "API Endpoints for user authentication"
         },
         {
             "name": "Books",
