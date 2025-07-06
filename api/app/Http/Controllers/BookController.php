@@ -14,6 +14,13 @@ use OpenApi\Annotations as OA;
  *     description="API for Library Management System"
  * )
  * 
+ * @OA\SecurityScheme(
+ *     securityScheme="bearerAuth",
+ *     type="http",
+ *     scheme="bearer",
+ *     bearerFormat="JWT"
+ * )
+ * 
  * @OA\Schema(
  *     schema="Book",
  *     title="Book",
