@@ -234,5 +234,186 @@ class BookController extends Controller
             'message' => 'Book deleted successfully'
         ], 200);
     }
+
+    /**
+     * Filter books with advanced filtering and pagination.
+     * 
+     * @OA\Get(
+     *     path="/api/books/filter",
+     *     summary="Filter books with advanced filtering",
+     *     tags={"Books"},
+     *     @OA\Parameter(
+     *         name="title",
+     *         in="query",
+     *         description="Filter by book title (partial match)",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="author",
+     *         in="query",
+     *         description="Filter by author name (partial match)",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="category_id",
+     *         in="query",
+     *         description="Filter by category ID",
+     *         required=false,
+     *         @OA\Schema(type="string", format="uuid")
+     *     ),
+     *     @OA\Parameter(
+     *         name="start_date",
+     *         in="query",
+     *         description="Filter by start date (YYYY-MM-DD)",
+     *         required=false,
+     *         @OA\Schema(type="string", format="date")
+     *     ),
+     *     @OA\Parameter(
+     *         name="end_date",
+     *         in="query",
+     *         description="Filter by end date (YYYY-MM-DD)",
+     *         required=false,
+     *         @OA\Schema(type="string", format="date")
+     *     ),
+     *     @OA\Parameter(
+     *         name="sort_by",
+     *         in="query",
+     *         description="Sort field (title, author, created_at, updated_at)",
+     *         required=false,
+     *         @OA\Schema(type="string", default="created_at")
+     *     ),
+     *     @OA\Parameter(
+     *         name="sort_order",
+     *         in="query",
+     *         description="Sort order (asc, desc)",
+     *         required=false,
+     *         @OA\Schema(type="string", enum={"asc", "desc"}, default="desc")
+     *     ),
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Number of items per page",
+     *         required=false,
+     *         @OA\Schema(type="integer", default=15)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Filtered books with pagination",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Book")),
+     *             @OA\Property(property="current_page", type="integer", example=1),
+     *             @OA\Property(property="per_page", type="integer", example=15),
+     *             @OA\Property(property="total", type="integer", example=100),
+     *             @OA\Property(property="last_page", type="integer", example=7)
+     *         )
+     *     )
+     * )
+     */
+    public function filter(Request $request): JsonResponse
+    {
+        $query = Book::with('category');
+
+        // Apply filters
+        $filters = $request->only(['title', 'author', 'category_id', 'start_date', 'end_date']);
+        $query->applyFilters($filters);
+
+        // Apply sorting
+        $sortBy = $request->get('sort_by', 'created_at');
+        $sortOrder = $request->get('sort_order', 'desc');
+        $query->sortBy($sortBy, $sortOrder);
+
+        // Apply pagination
+        $perPage = $request->get('per_page', 15);
+        $books = $query->paginate($perPage);
+
+        return response()->json($books);
+    }
+
+    /**
+     * Search books with advanced filtering.
+     * 
+     * @OA\Get(
+     *     path="/api/books/search",
+     *     summary="Search books with advanced filtering",
+     *     tags={"Books"},
+     *     @OA\Parameter(
+     *         name="q",
+     *         in="query",
+     *         description="Search query (searches in title and author)",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="category_id",
+     *         in="query",
+     *         description="Filter by category ID",
+     *         required=false,
+     *         @OA\Schema(type="string", format="uuid")
+     *     ),
+     *     @OA\Parameter(
+     *         name="sort_by",
+     *         in="query",
+     *         description="Sort field (title, author, created_at, updated_at)",
+     *         required=false,
+     *         @OA\Schema(type="string", default="created_at")
+     *     ),
+     *     @OA\Parameter(
+     *         name="sort_order",
+     *         in="query",
+     *         description="Sort order (asc, desc)",
+     *         required=false,
+     *         @OA\Schema(type="string", enum={"asc", "desc"}, default="desc")
+     *     ),
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Number of items per page",
+     *         required=false,
+     *         @OA\Schema(type="integer", default=15)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Search results",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/Book")),
+     *             @OA\Property(property="current_page", type="integer", example=1),
+     *             @OA\Property(property="per_page", type="integer", example=15),
+     *             @OA\Property(property="total", type="integer", example=100),
+     *             @OA\Property(property="last_page", type="integer", example=7)
+     *         )
+     *     )
+     * )
+     */
+    public function search(Request $request): JsonResponse
+    {
+        $query = Book::with('category');
+
+        // Search query
+        if ($request->has('q') && !empty($request->q)) {
+            $searchTerm = $request->q;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('title', 'ILIKE', "%{$searchTerm}%")
+                  ->orWhere('author', 'ILIKE', "%{$searchTerm}%");
+            });
+        }
+
+        // Filter by category
+        if ($request->has('category_id') && !empty($request->category_id)) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        // Apply sorting
+        $sortBy = $request->get('sort_by', 'created_at');
+        $sortOrder = $request->get('sort_order', 'desc');
+        $query->sortBy($sortBy, $sortOrder);
+
+        // Apply pagination
+        $perPage = $request->get('per_page', 15);
+        $books = $query->paginate($perPage);
+
+        return response()->json($books);
+    }
     
 }
