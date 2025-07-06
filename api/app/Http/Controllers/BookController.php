@@ -43,6 +43,7 @@ class BookController extends Controller
      *     path="/api/books",
      *     summary="Get all books",
      *     tags={"Books"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="List of books retrieved successfully",
@@ -62,6 +63,7 @@ class BookController extends Controller
      *     path="/api/books",
      *     summary="Create a new book",
      *     tags={"Books"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -99,6 +101,7 @@ class BookController extends Controller
      *     path="/api/books/{id}",
      *     summary="Get a specific book",
      *     tags={"Books"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -137,6 +140,7 @@ class BookController extends Controller
      *     path="/api/books/{id}",
      *     summary="Update a book",
      *     tags={"Books"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -195,6 +199,7 @@ class BookController extends Controller
      *     path="/api/books/{id}",
      *     summary="Delete a book",
      *     tags={"Books"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
