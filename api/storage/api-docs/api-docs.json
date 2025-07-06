@@ -554,8 +554,8 @@
                 "tags": [
                     "Categories"
                 ],
-                "summary": "Create a new category",
-                "description": "Store a newly created category.",
+                "summary": "Create a new category (Admin only)",
+                "description": "Only users with the admin role can create categories.",
                 "operationId": "71fcad552bb0eaba9fb191fd8d8dcab0",
                 "requestBody": {
                     "required": true,
@@ -591,7 +591,12 @@
                     "422": {
                         "description": "Validation error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/categories/{id}": {
@@ -633,8 +638,8 @@
                 "tags": [
                     "Categories"
                 ],
-                "summary": "Update a category",
-                "description": "Update the specified category.",
+                "summary": "Update a category (Admin only)",
+                "description": "Only users with the admin role can update categories.",
                 "operationId": "0e686b2748211cc688333ed705dc111f",
                 "parameters": [
                     {
@@ -681,14 +686,19 @@
                     "422": {
                         "description": "Validation error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
                     "Categories"
                 ],
-                "summary": "Delete a category",
-                "description": "Remove the specified category.",
+                "summary": "Delete a category (Admin only)",
+                "description": "Only users with the admin role can delete categories.",
                 "operationId": "4c12e22a7f8c617bd83bfa1fdc05428d",
                 "parameters": [
                     {
@@ -721,7 +731,12 @@
                     "404": {
                         "description": "Category not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/categories/{id}/books": {

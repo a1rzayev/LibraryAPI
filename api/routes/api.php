@@ -30,13 +30,11 @@ Route::middleware('auth:api')->group(function () {
     Route::put('books/{id}', [BookController::class, 'update']);
     Route::delete('books/{id}', [BookController::class, 'destroy']);
     
-    // Categories - create, update, delete operations
-    Route::post('categories', [CategoryController::class, 'store']);
-    Route::put('categories/{id}', [CategoryController::class, 'update']);
-    Route::delete('categories/{id}', [CategoryController::class, 'destroy']);
-    
-    // Admin-only routes
+    // Categories - admin-only create, update, delete operations
     Route::middleware('role:admin')->group(function () {
+        Route::post('categories', [CategoryController::class, 'store']);
+        Route::put('categories/{id}', [CategoryController::class, 'update']);
+        Route::delete('categories/{id}', [CategoryController::class, 'destroy']);
         Route::apiResource('users', UserController::class);
     });
 }); 
