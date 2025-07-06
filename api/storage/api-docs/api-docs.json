@@ -648,14 +648,14 @@
                                         "example": "Updated Address"
                                     },
                                     "role": {
-                                        "description": "User role: admin, librarian, member",
+                                        "description": "User role: admin, author, member",
                                         "type": "string",
                                         "enum": [
                                             "admin",
-                                            "librarian",
+                                            "author",
                                             "member"
                                         ],
-                                        "example": "librarian"
+                                        "example": "author"
                                     },
                                     "is_active": {
                                         "type": "boolean",
@@ -826,11 +826,11 @@
                         "nullable": true
                     },
                     "role": {
-                        "description": "User role: admin, librarian, member",
+                        "description": "User role: admin, author, member",
                         "type": "string",
                         "enum": [
                             "admin",
-                            "librarian",
+                            "author",
                             "member"
                         ],
                         "example": "member"
