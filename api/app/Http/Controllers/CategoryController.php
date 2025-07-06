@@ -45,8 +45,10 @@ class CategoryController extends Controller
      * 
      * @OA\Post(
      *     path="/api/categories",
-     *     summary="Create a new category",
+     *     summary="Create a new category (Admin only)",
+     *     description="Only users with the admin role can create categories.",
      *     tags={"Categories"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -114,8 +116,10 @@ class CategoryController extends Controller
      * 
      * @OA\Put(
      *     path="/api/categories/{id}",
-     *     summary="Update a category",
+     *     summary="Update a category (Admin only)",
+     *     description="Only users with the admin role can update categories.",
      *     tags={"Categories"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -163,8 +167,10 @@ class CategoryController extends Controller
      * 
      * @OA\Delete(
      *     path="/api/categories/{id}",
-     *     summary="Delete a category",
+     *     summary="Delete a category (Admin only)",
+     *     description="Only users with the admin role can delete categories.",
      *     tags={"Categories"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Enums;
 
 enum UserRole: string
 {
@@ -27,4 +27,4 @@ enum UserRole: string
             self::MEMBER => 'Member',
         };
     }
-}
+} 

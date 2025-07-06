@@ -14,6 +14,13 @@ use OpenApi\Annotations as OA;
  *     description="API for Library Management System"
  * )
  * 
+ * @OA\SecurityScheme(
+ *     securityScheme="bearerAuth",
+ *     type="http",
+ *     scheme="bearer",
+ *     bearerFormat="JWT"
+ * )
+ * 
  * @OA\Schema(
  *     schema="Book",
  *     title="Book",
@@ -55,6 +62,7 @@ class BookController extends Controller
      *     path="/api/books",
      *     summary="Create a new book",
      *     tags={"Books"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -130,6 +138,7 @@ class BookController extends Controller
      *     path="/api/books/{id}",
      *     summary="Update a book",
      *     tags={"Books"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -188,6 +197,7 @@ class BookController extends Controller
      *     path="/api/books/{id}",
      *     summary="Delete a book",
      *     tags={"Books"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
