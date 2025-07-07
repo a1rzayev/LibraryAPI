@@ -1427,7 +1427,7 @@
                 "operationId": "7de9c05c67c97110c68860d9c0b814f9",
                 "responses": {
                     "200": {
-                        "description": "User's wishlist retrieved successfully",
+                        "description": "Wishlist retrieved successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1467,10 +1467,12 @@
                                 "properties": {
                                     "book_id": {
                                         "type": "string",
-                                        "example": "550e8400-e29b-41d4-a716-446655440002"
+                                        "format": "uuid",
+                                        "example": "550e8400-e29b-41d4-a716-446655440001"
                                     },
                                     "notes": {
                                         "type": "string",
+                                        "maxLength": 1000,
                                         "example": "Want to read this book"
                                     }
                                 },
@@ -1491,10 +1493,36 @@
                         }
                     },
                     "400": {
-                        "description": "Book already in wishlist"
+                        "description": "Book already in wishlist",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Book is already in your wishlist"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Book not found"
+                        "description": "Book not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Book not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "422": {
                         "description": "Validation error"
@@ -1539,7 +1567,20 @@
                         }
                     },
                     "404": {
-                        "description": "Wishlist item not found"
+                        "description": "Wishlist item not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Wishlist item not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -1552,7 +1593,7 @@
                 "tags": [
                     "Wishlist"
                 ],
-                "summary": "Update wishlist item",
+                "summary": "Update wishlist item notes",
                 "description": "Update the specified wishlist item.",
                 "operationId": "aaed265e02ae69ea264e4ccbedf355d0",
                 "parameters": [
@@ -1575,6 +1616,7 @@
                                 "properties": {
                                     "notes": {
                                         "type": "string",
+                                        "maxLength": 1000,
                                         "example": "Updated notes for this book"
                                     }
                                 },
@@ -1595,7 +1637,20 @@
                         }
                     },
                     "404": {
-                        "description": "Wishlist item not found"
+                        "description": "Wishlist item not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Wishlist item not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "422": {
                         "description": "Validation error"
@@ -1644,7 +1699,20 @@
                         }
                     },
                     "404": {
-                        "description": "Wishlist item not found"
+                        "description": "Wishlist item not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Wishlist item not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -1666,29 +1734,21 @@
                     {
                         "name": "book_id",
                         "in": "path",
-                        "description": "Book ID",
+                        "description": "Book ID to check",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "format": "uuid"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Check result",
+                        "description": "Wishlist check completed",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "in_wishlist": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "wishlist_item": {
-                                            "$ref": "#/components/schemas/Wishlist"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/WishlistCheck"
                                 }
                             }
                         }
@@ -1852,13 +1912,13 @@
                         "example": "550e8400-e29b-41d4-a716-446655440000"
                     },
                     "user_id": {
-                        "type": "string",
-                        "format": "uuid",
-                        "example": "550e8400-e29b-41d4-a716-446655440001"
+                        "type": "integer",
+                        "example": 1
                     },
                     "book_id": {
                         "type": "string",
-                        "example": "550e8400-e29b-41d4-a716-446655440002"
+                        "format": "uuid",
+                        "example": "550e8400-e29b-41d4-a716-446655440001"
                     },
                     "notes": {
                         "type": "string",
@@ -1880,6 +1940,25 @@
                     }
                 },
                 "type": "object"
+            },
+            "WishlistCheck": {
+                "title": "Wishlist Check Response",
+                "description": "Response for checking if a book is in wishlist",
+                "properties": {
+                    "in_wishlist": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "wishlist_item": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/Wishlist"
+                            }
+                        ],
+                        "nullable": true
+                    }
+                },
+                "type": "object"
             }
         },
         "securitySchemes": {
@@ -1896,6 +1975,10 @@
             "description": "API Endpoints for user authentication"
         },
         {
+            "name": "Wishlist",
+            "description": "Wishlist management endpoints"
+        },
+        {
             "name": "Books",
             "description": "Books"
         },
@@ -1906,10 +1989,6 @@
         {
             "name": "Users",
             "description": "Users"
-        },
-        {
-            "name": "Wishlist",
-            "description": "Wishlist"
         }
     ]
 }
