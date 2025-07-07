@@ -6,6 +6,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\WishlistController;
 
 // Authentication routes
 Route::group(['prefix' => 'auth'], function () {
@@ -32,6 +33,14 @@ Route::middleware('auth:api')->group(function () {
     Route::post('books', [BookController::class, 'store']);
     Route::put('books/{id}', [BookController::class, 'update']);
     Route::delete('books/{id}', [BookController::class, 'destroy']);
+    
+    // Wishlist routes
+    Route::get('wishlist', [WishlistController::class, 'index']);
+    Route::post('wishlist', [WishlistController::class, 'store']);
+    Route::get('wishlist/{id}', [WishlistController::class, 'show']);
+    Route::put('wishlist/{id}', [WishlistController::class, 'update']);
+    Route::delete('wishlist/{id}', [WishlistController::class, 'destroy']);
+    Route::get('wishlist/check/{book_id}', [WishlistController::class, 'check']);
     
     // Categories - admin-only create, update, delete operations
     Route::middleware('role:admin')->group(function () {

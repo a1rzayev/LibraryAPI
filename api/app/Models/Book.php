@@ -28,6 +28,14 @@ class Book extends Model
     }
 
     /**
+     * Get the wishlist items for this book.
+     */
+    public function wishlistItems()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
+    /**
      * Boot function from Laravel.
      */
     protected static function boot()

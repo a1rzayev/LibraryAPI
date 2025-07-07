@@ -118,9 +118,9 @@ class BookController extends Controller
      *     )
      * )
      */
-    public function show(string $id): JsonResponse
+    public function show(Request $request, string $id): JsonResponse
     {
-        $book = Book::find($id);
+        $book = Book::with('category')->find($id);
         
         if (!$book) {
             return response()->json([
@@ -128,7 +128,19 @@ class BookController extends Controller
             ], 404);
         }
         
-        return response()->json($book);
+        $response = $book->toArray();
+        
+        // If user is authenticated, check if book is in their wishlist
+        if ($request->user()) {
+            $wishlistItem = \App\Models\Wishlist::where('user_id', $request->user()->id)
+                ->where('book_id', $id)
+                ->first();
+            
+            $response['in_wishlist'] = $wishlistItem !== null;
+            $response['wishlist_notes'] = $wishlistItem ? $wishlistItem->notes : null;
+        }
+        
+        return response()->json($response);
     }
 
     /**
