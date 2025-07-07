@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Base;
 use App\Models\Book;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Annotations as OA;
