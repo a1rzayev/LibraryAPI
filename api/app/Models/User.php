@@ -107,4 +107,12 @@ class User extends Authenticatable implements JWTSubject
             'email' => $this->email,
         ];
     }
+
+    /**
+     * Get the user's wishlist items.
+     */
+    public function wishlist()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
 }
